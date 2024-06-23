@@ -1,0 +1,63 @@
+export type WaterProps = {
+  id?: string;
+  userId: string;
+  clusterId?: string;
+  status: string;
+  description: string;
+  rejectionReason: string;
+  collectedTimeDate: Date;
+  collectionHour?: Date;
+  color: string;
+  no2Residue: number | null;
+  chloride: number | null;
+  chlorine: number | null;
+  iron: number | null;
+  ph: number | null;
+  condutivity: number | null;
+  sulfate: number | null;
+  nitrite: number | null;
+  hypochlorite: number | null;
+  solubleIron: number | null;
+  turbidity: number | null;
+  sulfite: number | null;
+  dissolvedOxygen: number | null;
+  codeSample: string;
+  collectedByUserId: string;
+  pointSamplingId: string;
+  pointSampling?: {
+    id: string;
+    name: string;
+  };
+};
+
+export type WaterEditingProps = {
+  id: string;
+  userId: string;
+  clusterId: string;
+  status: string;
+  description: string;
+  rejectionReason: string;
+  collectedTimeDate: Date;
+  color: string;
+  no2Residue: number | null;
+  chloride: number | null;
+  chlorine: number | null;
+  iron: number | null;
+  ph: number | null;
+  condutivity: number | null;
+  sulfate: number | null;
+  nitrite: number | null;
+  hypochlorite: number | null;
+  solubleIron: number | null;
+  turbidity: number | null;
+  sulfite: number | null;
+  dissolvedOxygen: number | null;
+  codeSample: string;
+  pointSamplingId: string;
+  pointSampling: string;
+  collectedByUserId: string;
+  collectedBy: {
+    id: string;
+    name: string;
+  };
+};

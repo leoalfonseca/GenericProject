@@ -1,0 +1,70 @@
+export type WaterProps = {
+  id?: string;
+  userId: string;
+  clusterId: string;
+  status: string;
+  collectedTimeDate: Date;
+  description: string;
+  rejectionReason: string;
+  ph: number | null;
+  sdi: number | null;
+  oxygen: number | null;
+  particleCount: number | null;
+  sulfiteContent: number | null;
+  ironContent: number | null;
+  sulfateContent: number | null;
+  temperature: number | null;
+  particle3: number | null;
+  particle5: number | null;
+  particle7: number | null;
+  particle10: number | null;
+  particle15: number | null;
+  particle29: number | null;
+  particle50: number | null;
+  codeSample: string;
+  pointSamplingId: string;
+  responsibilityTechinalId: string;
+  collectedByUserId: string;
+  pointSampling?: {
+    id: string;
+    name: string;
+  };
+};
+
+export type WaterEditingProps = {
+  id: string;
+  userId: string;
+  status: string;
+  clusterId: string;
+  description: string;
+  rejectionReason: string;
+  collectedTimeDate: Date;
+  ph: number | null;
+  sdi: number | null;
+  oxygen: number | null;
+  particleCount: number | null;
+  sulfiteContent: number | null;
+  ironContent: number | null;
+  sulfateContent: number | null;
+  temperature: number | null;
+  particle3: number | null;
+  particle5: number | null;
+  particle7: number | null;
+  particle10: number | null;
+  particle15: number | null;
+  particle29: number | null;
+  particle50: number | null;
+  codeSample: string;
+  pointSamplingId: string;
+  responsibilityTechinalId: string;
+  responsibilityTechinal: {
+    id: string;
+    name: string;
+  };
+  pointSampling: string;
+  collectedByUserId: string;
+  collectedBy: {
+    id: string;
+    name: string;
+  };
+};

@@ -1,0 +1,56 @@
+import { ElementItemStatusProps } from './element';
+import { InstallationProps } from './installations';
+
+export type EquipmentProps = {
+  id?: string;
+  installation?: InstallationProps;
+  installationId: string;
+  userId: string;
+  location: string;
+  name: string;
+  range: string;
+  type: string;
+  elementItemStatusId: string;
+  prioLabId: string;
+  serialNumber: string;
+  manufacturer: string;
+  manufacturerTag: string;
+  model: string;
+  manufactureDate: Date;
+  installationDate: Date;
+  observations: string;
+  usage: boolean;
+  criticality: boolean;
+  isActive?: boolean;
+  isUsed?: boolean;
+  calibrationPeriod: number;
+  verificationPeriod: number;
+  calibrationStatus?: string;
+  verificationStatus?: string;
+};
+
+export type EditingEquipmentProps = {
+  id: string;
+  installationId: string;
+  installation?: InstallationProps;
+  userId: string;
+  location: string;
+  name: string;
+  range: string;
+  type: string;
+  elementItemStatusId: string;
+  prioLabId: string;
+  serialNumber: string;
+  manufacturer: string;
+  manufacturerTag: string;
+  model: string;
+  manufactureDate: Date;
+  installationDate: Date;
+  observations: string;
+  usage: boolean;
+  criticality: boolean;
+  calibrationPeriod: number;
+  verificationPeriod: number;
+  calibrationStatus?: string;
+  verificationStatus?: string;
+};
