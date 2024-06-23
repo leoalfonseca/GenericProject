@@ -1,5 +1,12 @@
 import React from 'react';
-import { Box, Avatar, Typography, IconButton, Tooltip, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  Avatar,
+  Typography,
+  IconButton,
+  Tooltip,
+  useMediaQuery,
+} from '@mui/material';
 import { useSelector } from '../../../../../store/Store';
 import { IconPower } from '@tabler/icons-react';
 import { AppState } from '../../../../../store/Store';
@@ -8,7 +15,9 @@ import Link from 'next/link';
 export const Profile = () => {
   const customizer = useSelector((state: AppState) => state.customizer);
   const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up('lg'));
-  const hideMenu = lgUp ? customizer.isCollapse && !customizer.isSidebarHover : '';
+  const hideMenu = lgUp
+    ? customizer.isCollapse && !customizer.isSidebarHover
+    : '';
 
   return (
     <Box
@@ -19,18 +28,18 @@ export const Profile = () => {
     >
       {!hideMenu ? (
         <>
-          <Avatar alt="Remy Sharp" src={"/images/profile/user-1.jpg"} />
+          <Avatar alt="Remy Sharp" src={'/images/profile/user-1.jpg'} />
 
           <Box>
-            <Typography variant="h6">Mathew</Typography>
-            <Typography variant="caption">Designer</Typography>
+            <Typography variant="h6">Leonardo</Typography>
+            <Typography variant="caption">Dev</Typography>
           </Box>
           <Box sx={{ ml: 'auto' }}>
             <Tooltip title="Logout" placement="top">
               <IconButton
                 color="primary"
                 component={Link}
-                href="auth/auth1/login"
+                href="/"
                 aria-label="logout"
                 size="small"
               >

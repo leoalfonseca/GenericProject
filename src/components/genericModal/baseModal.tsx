@@ -142,12 +142,15 @@ const GenericModal = (props: iModalGenericProps) => {
                   variant="contained"
                   onClick={handleClose}
                   sx={{
-                    backgroundColor: '#004645',
-                    color: 'white',
+                    backgroundColor: '#b0c8fc',
+                    color: '#252628',
                     marginRight: 2,
                     '&:hover': {
-                      backgroundColor: '#096268',
-                      color: '#fff',
+                      backgroundColor: `#7795d6`,
+                      color: '#252628',
+                    },
+                    '& .MuiButton-startIcon': {
+                      margin: 'auto',
                     },
                   }}
                 >
@@ -157,11 +160,11 @@ const GenericModal = (props: iModalGenericProps) => {
                   variant="contained"
                   type="submit"
                   sx={{
-                    backgroundColor: '#004645',
-                    color: 'white',
+                    backgroundColor: '#b0c8fc',
+                    color: '#252628',
                     '&:hover': {
-                      backgroundColor: `#004645`,
-                      color: 'white',
+                      backgroundColor: `#7795d6`,
+                      color: '#252628',
                     },
                     '& .MuiButton-startIcon': {
                       margin: 'auto',

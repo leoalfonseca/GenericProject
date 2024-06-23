@@ -97,7 +97,7 @@ const Profile = () => {
         <Divider />
         <Box mt={2}>
           <Button
-            href="/auth/login"
+            href="/"
             variant="outlined"
             color="primary"
             component={Link}

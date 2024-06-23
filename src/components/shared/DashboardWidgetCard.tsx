@@ -5,12 +5,12 @@ import { AppState } from '../../../src/store/Store';
 import { IconGridDots } from '@tabler/icons-react';
 
 type Props = {
-  title: string;
-  subtitle: string;
-  dataLabel1: string;
-  dataItem1: string;
-  dataLabel2: string;
-  dataItem2: string;
+  title?: string;
+  subtitle?: string;
+  dataLabel1?: string;
+  dataItem1?: string;
+  dataLabel2?: string;
+  dataItem2?: string;
   children: JSX.Element;
 };
 
@@ -30,7 +30,11 @@ const DashboardWidgetCard = ({
 
   return (
     <Card
-      sx={{ padding: 0, border: !customizer.isCardShadow ? `1px solid ${borderColor}` : 'none' }}
+      sx={{
+        padding: 0,
+        border: !customizer.isCardShadow ? `1px solid ${borderColor}` : 'none',
+        minHeight: 470,
+      }}
       elevation={customizer.isCardShadow ? 9 : 0}
       variant={!customizer.isCardShadow ? 'outlined' : undefined}
     >
@@ -51,7 +55,12 @@ const DashboardWidgetCard = ({
 
         {children}
 
-        <Stack direction="row" spacing={2} justifyContent="space-between" mt={2}>
+        <Stack
+          direction="row"
+          spacing={2}
+          justifyContent="space-between"
+          mt={2}
+        >
           <Stack direction="row" spacing={2} alignItems="center">
             <Box
               width={38}
