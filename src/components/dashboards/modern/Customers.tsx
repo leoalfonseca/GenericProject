@@ -1,11 +1,9 @@
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 import { useTheme } from '@mui/material/styles';
 import { Stack, Typography, Avatar } from '@mui/material';
 import { IconArrowDownRight } from '@tabler/icons-react';
 import DashboardCard from '../../shared/DashboardCard';
-
-
 
 const Customers = () => {
   // chart color
@@ -65,16 +63,16 @@ const Customers = () => {
             series={seriescolumnchart}
             type="area"
             height={80}
-            width={"100%"}
+            width={'100%'}
           />
         </>
       }
     >
       <>
         <Typography variant="subtitle2" color="textSecondary">
-          Customers
+          Clientes
         </Typography>
-        <Typography variant="h4">36,358</Typography>
+        <Typography variant="h4">36.358</Typography>
         <Stack direction="row" spacing={1} mt={1} alignItems="center">
           <Avatar sx={{ bgcolor: errorlight, width: 24, height: 24 }}>
             <IconArrowDownRight width={18} color="#FA896B" />

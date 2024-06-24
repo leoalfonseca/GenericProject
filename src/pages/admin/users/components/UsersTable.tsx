@@ -1,16 +1,8 @@
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  Grid,
-  Menu,
-  MenuItem,
-  Tooltip,
-} from '@mui/material';
-import { DataGrid, GridRenderCellParams, ptBR } from '@mui/x-data-grid';
+import { Box, Button, Grid, Menu, MenuItem } from '@mui/material';
+import { DataGrid, ptBR } from '@mui/x-data-grid';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { IconEdit, IconPlus, IconKey } from '@tabler/icons-react';
+import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
 import CustomChip from 'components/CustomChip';
 import { UserContext } from 'context/UserContext';
 import ptBRLocale from 'date-fns/locale/pt-BR';
@@ -23,24 +15,11 @@ import { UserProps } from 'types/user';
 import * as XLSX from 'xlsx';
 import EditUserForm from './EditUserForm';
 import { IValueGetter } from 'types/valueGetter';
-import { AuthContext } from 'context/AuthContext';
-import { api } from 'services/api';
-import { GetGroupType } from 'types/group';
-import ConfirmationModal from 'components/modal/ConfirmationModal';
+import { get } from 'http';
+import { useSelector } from 'react-redux';
+import { AppState } from 'store/Store';
 
 const UsersTable = () => {
-  // ================================================== //
-  interface iUserSwitchStatus {
-    userId: string;
-    status: boolean;
-  }
-
-  const [userSwitchStatus, setUserSwitchStatus] =
-    useState<iUserSwitchStatus | null>(null);
-  const [isModalComfirmStatusOpen, setIsModalComfirmStatusOpen] =
-    useState<boolean>(false);
-  // ================================================== //
-
   const [downloadMenuAnchor, setDownloadMenuAnchor] =
     useState<null | HTMLElement>(null);
 
@@ -54,11 +33,11 @@ const UsersTable = () => {
 
   const handleExportToExcel = () => {
     const exportData = rows.map((item) => ({
-      Status: item.isUsed ? 'Ativo' : 'Inativo',
-      Usuário: item.name,
-      Alias: item.username,
+      Status: item.status,
+      Nome: item.name,
+      'Nome de Usuário': item.username,
       Email: item.email,
-      Grupo: item.group?.name,
+      Budget: item.budget,
     }));
 
     const ws = XLSX.utils.json_to_sheet(exportData);
@@ -80,26 +59,32 @@ const UsersTable = () => {
   };
 
   const handleExportToPDF = () => {
-    const exportData: any = rows.map((item: any) => ({
-      Status: item.isUsed ? 'Ativo' : 'Inativo',
-      Usuário: item.name,
-      Alias: item.username,
+    const exportData: any = rows.map((item) => ({
+      Status: item.status,
+      Nome: item.name,
+      'Nome de Usuário': item.username,
       Email: item.email,
-      Grupo: item.group?.name,
+      Budget: item.budget,
     }));
 
     const doc = new jsPDF('l', 'mm', [297, 400]);
 
     const columns = [
       { header: 'Status', dataKey: 'Status' },
-      { header: 'Usuário', dataKey: 'Usuário' },
-      { header: 'Alias', dataKey: 'Alias' },
+      { header: 'Nome', dataKey: 'Nome' },
+      { header: 'Nome de Usuário', dataKey: 'Nome de Usuário' },
       { header: 'Email', dataKey: 'Email' },
-      { header: 'Grupo', dataKey: 'Grupo' },
+      { header: 'Budget', dataKey: 'Budget' },
     ];
 
     const rowsPDF = exportData.map((row: any) => {
-      return [row.Status, row.Usuário, row.Alias, row.Email, row.Grupo];
+      return [
+        row.Status,
+        row.Nome,
+        row['Nome de Usuário'],
+        row.Email,
+        row.Budget,
+      ];
     });
 
     autoTable(doc, {
@@ -114,10 +99,10 @@ const UsersTable = () => {
 
   const columns = [
     {
-      field: 'isUsed',
+      field: 'status',
       headerName: 'Status',
       headerClassName: 'header',
-      flex: 0.9,
+      flex: 0.5,
       minWidth: 140,
       type: 'singleSelect',
       valueOptions: ['Ativo', 'Inativo'],
@@ -138,41 +123,34 @@ const UsersTable = () => {
       field: 'name',
       headerName: 'Nome',
       headerClassName: 'header',
-      flex: 0.9,
-      minWidth: 140,
+      flex: 1,
     },
     {
       field: 'username',
       headerName: 'Nome de usuário',
       headerClassName: 'header',
-      flex: 0.9,
-      minWidth: 140,
+      flex: 1,
     },
     {
       field: 'email',
       headerName: 'Email',
       headerClassName: 'header',
-      flex: 0.9,
-      minWidth: 140,
+      flex: 1,
     },
     {
-      field: 'group',
-      valueGetter: (params: IValueGetter) => params?.value?.name,
-      headerName: 'Grupo',
+      field: 'budget',
+      headerName: 'Budget',
       headerClassName: 'header',
-      minWidth: 140,
-      valueFormatter: (params: any) => {
-        if (!params.value) {
-          return 'Ainda não associado';
-        }
-        return params.value;
+      flex: 1,
+      valueGetter: (params: IValueGetter) => {
+        return 'R$ ' + params.value + 'k';
       },
-      flex: 0.9,
     },
+
     {
       field: 'actions',
       headerName: 'Ações',
-      flex: 0.9,
+      flex: 1,
       type: 'actions',
       minWidth: 240,
       headerClassName: 'header',
@@ -181,19 +159,37 @@ const UsersTable = () => {
           <Button
             startIcon={<IconEdit />}
             onClick={() => handleEditUser(params.row.id)}
-            sx={{
-              mx: 0.3,
-              backgroundColor: '#004645',
-              color: 'white',
-              '&:hover': {
-                backgroundColor: `#002d2d`,
-                color: 'white',
-              },
-              '& .MuiButton-startIcon': {
-                margin: 'auto',
-              },
-            }}
+            sx={
+              customizer.activeMode === 'dark'
+                ? {
+                    backgroundColor: '#253662',
+                    color: '#EAEFF4',
+                    mr: 0.8,
+                    '&:hover': {
+                      backgroundColor: '#172342',
+                      color: '#EAEFF4',
+                    },
+                    '& .MuiButton-startIcon': {
+                      margin: 'auto',
+                    },
+                  }
+                : {
+                    backgroundColor: '#5D87FF',
+                    color: '#ffffff',
+                    mr: 0.8,
+                    '&:hover': {
+                      backgroundColor: '#4261b7',
+                      color: '#ffffff',
+                    },
+                    '& .MuiButton-startIcon': {
+                      margin: 'auto',
+                    },
+                  }
+            }
           />
+          <Button onClick={() => handleDeleteUser(params.row.id)} color="error">
+            <IconTrash />
+          </Button>
         </Box>
       ),
     },
@@ -201,28 +197,9 @@ const UsersTable = () => {
 
   const [rows, setRows] = useState<UserProps[]>([]);
   const [open, setOpen] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState('');
   const [openEdit, setOpenEdit] = useState(false);
-  const [openPermissionModal, setOpenPermissionModal] = useState(false);
   const [editingUser, setEditingUser] = useState<UserProps | null>(null);
-  const [editingGroup, setEditingGroup] = useState<GetGroupType | null>(null);
-  const [switchStates, setSwitchStates] = useState<{ [key: string]: boolean }>(
-    {}
-  );
-  const [initialSwitchStates, setInitialSwitchStates] = useState<{
-    [key: string]: boolean;
-  }>({});
-  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-
-  const [userObj, setGroupObj] = useState<any>({
-    menus: [],
-    groups: [],
-  });
-
-  const [groupObjToEdit, setGroupObjEdit] = useState<any>({
-    menus: [],
-    groups: [],
-  });
+  const customizer = useSelector((state: AppState) => state.customizer);
 
   const handleOpen = () => setOpen(true);
 
@@ -237,21 +214,14 @@ const UsersTable = () => {
   const handleClose = () => {
     setOpen(false);
     setOpenEdit(false);
-    setOpenPermissionModal(false);
     getUsersList();
   };
 
-  const { getUsers } = useContext(UserContext);
+  const { getUsers, deleteUser, users } = useContext(UserContext);
 
   const getUsersList = async () => {
     const usersList = await getUsers();
     setRows(usersList);
-
-    const initialSwitchStatesObj: { [key: string]: boolean } = {};
-    usersList.forEach((user) => {
-      initialSwitchStatesObj[user.id] = user.isUsed;
-    });
-    setInitialSwitchStates(initialSwitchStatesObj);
   };
 
   const handleEditUser = (userId: string) => {
@@ -263,9 +233,17 @@ const UsersTable = () => {
     }
   };
 
+  const handleDeleteUser = (userId: string) => {
+    deleteUser(userId);
+  };
+
   useEffect(() => {
     getUsersList();
   }, []);
+
+  useEffect(() => {
+    setRows(users);
+  }, [users]);
 
   return (
     <LocalizationProvider
@@ -282,18 +260,33 @@ const UsersTable = () => {
           >
             <Button
               onClick={handleDownloadMenuOpen}
-              sx={{
-                mx: 0.3,
-                backgroundColor: '#004645',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: `#002d2d`,
-                  color: 'white',
-                },
-                '& .MuiButton-startIcon': {
-                  margin: 'auto',
-                },
-              }}
+              sx={
+                customizer.activeMode === 'dark'
+                  ? {
+                      backgroundColor: '#253662',
+                      color: '#EAEFF4',
+                      mr: 1,
+                      '&:hover': {
+                        backgroundColor: '#172342',
+                        color: '#EAEFF4',
+                      },
+                      '& .MuiButton-startIcon': {
+                        margin: 'auto',
+                      },
+                    }
+                  : {
+                      backgroundColor: '#5D87FF',
+                      color: '#ffffff',
+                      mr: 1,
+                      '&:hover': {
+                        backgroundColor: '#4261b7',
+                        color: '#ffffff',
+                      },
+                      '& .MuiButton-startIcon': {
+                        margin: 'auto',
+                      },
+                    }
+              }
             >
               Exportar
             </Button>
@@ -308,17 +301,31 @@ const UsersTable = () => {
             <Button
               onClick={handleOpen}
               startIcon={<IconPlus />}
-              sx={{
-                backgroundColor: '#004645',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: `#002d2d`,
-                  color: 'white',
-                },
-                '& .MuiButton-startIcon': {
-                  margin: 'auto',
-                },
-              }}
+              sx={
+                customizer.activeMode === 'dark'
+                  ? {
+                      backgroundColor: '#253662',
+                      color: '#EAEFF4',
+                      '&:hover': {
+                        backgroundColor: '#172342',
+                        color: '#EAEFF4',
+                      },
+                      '& .MuiButton-startIcon': {
+                        margin: 'auto',
+                      },
+                    }
+                  : {
+                      backgroundColor: '#5D87FF',
+                      color: '#ffffff',
+                      '&:hover': {
+                        backgroundColor: '#4261b7',
+                        color: '#ffffff',
+                      },
+                      '& .MuiButton-startIcon': {
+                        margin: 'auto',
+                      },
+                    }
+              }
             >
               Adicionar Novo
             </Button>
@@ -365,16 +372,11 @@ const UsersTable = () => {
         </Grid>
       </Grid>
 
-      <UserRegisterForm
-        open={open}
-        handleClose={handleClose}
-        userObj={userObj}
-      />
+      <UserRegisterForm open={open} handleClose={handleClose} />
       <EditUserForm
         open={openEdit}
         handleClose={handleClose}
         user={editingUser}
-        userObj={userObj}
       />
     </LocalizationProvider>
   );

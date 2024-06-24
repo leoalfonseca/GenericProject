@@ -1,5 +1,5 @@
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 import { useTheme } from '@mui/material/styles';
 import { Stack, Typography, Avatar } from '@mui/material';
 import { IconArrowUpLeft } from '@tabler/icons-react';
@@ -90,9 +90,9 @@ const Projects = () => {
     <DashboardCard>
       <>
         <Typography variant="subtitle2" color="textSecondary">
-          Projects
+          Produtos
         </Typography>
-        <Typography variant="h4">78,298</Typography>
+        <Typography variant="h4">78.298</Typography>
         <Stack direction="row" spacing={1} my={1} alignItems="center">
           <Avatar sx={{ bgcolor: successlight, width: 24, height: 24 }}>
             <IconArrowUpLeft width={18} color="#39B69A" />
@@ -101,7 +101,13 @@ const Projects = () => {
             +9%
           </Typography>
         </Stack>
-        <Chart options={optionscolumnchart} series={seriescolumnchart} type="bar" height={80} width={"100%"}/>
+        <Chart
+          options={optionscolumnchart}
+          series={seriescolumnchart}
+          type="bar"
+          height={80}
+          width={'100%'}
+        />
       </>
     </DashboardCard>
   );

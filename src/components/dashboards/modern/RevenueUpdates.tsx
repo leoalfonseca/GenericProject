@@ -1,8 +1,16 @@
 import React from 'react';
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 import { useTheme } from '@mui/material/styles';
-import { MenuItem, Grid, Stack, Typography, Button, Avatar, Box } from '@mui/material';
+import {
+  MenuItem,
+  Grid,
+  Stack,
+  Typography,
+  Button,
+  Avatar,
+  Box,
+} from '@mui/material';
 import { IconGridDots } from '@tabler/icons-react';
 import DashboardCard from '../../shared/DashboardCard';
 import CustomSelect from '../../forms/theme-elements/CustomSelect';
@@ -67,7 +75,15 @@ const RevenueUpdates = () => {
       tickAmount: 4,
     },
     xaxis: {
-      categories: ['16/08', '17/08', '18/08', '19/08', '20/08', '21/08', '22/08'],
+      categories: [
+        '16/08',
+        '17/08',
+        '18/08',
+        '19/08',
+        '20/08',
+        '21/08',
+        '22/08',
+      ],
       axisBorder: {
         show: false,
       },
@@ -79,19 +95,19 @@ const RevenueUpdates = () => {
   };
   const seriescolumnchart = [
     {
-      name: 'Eanings this month',
+      name: 'Lucros do mês',
       data: [1.5, 2.7, 2.2, 3.6, 1.5, 1.0],
     },
     {
-      name: 'Expense this month',
+      name: 'Despesas do mês',
       data: [-1.8, -1.1, -2.5, -1.5, -0.6, -1.8],
     },
   ];
 
   return (
     <DashboardCard
-      title="Revenue Updates"
-      subtitle="Overview of Profit"
+      title="Faturamento"
+      subtitle="Visão Geral do Lucro"
       action={
         <CustomSelect
           labelId="month-dd"
@@ -100,9 +116,9 @@ const RevenueUpdates = () => {
           value={month}
           onChange={handleChange}
         >
-          <MenuItem value={1}>March 2023</MenuItem>
-          <MenuItem value={2}>April 2023</MenuItem>
-          <MenuItem value={3}>May 2023</MenuItem>
+          <MenuItem value={1}>Março 2024</MenuItem>
+          <MenuItem value={2}>Abril 2024</MenuItem>
+          <MenuItem value={3}>Maio 2024</MenuItem>
         </CustomSelect>
       }
     >
@@ -110,13 +126,13 @@ const RevenueUpdates = () => {
         {/* column */}
         <Grid item xs={12} sm={8}>
           <Box className="rounded-bars">
-          <Chart
-            options={optionscolumnchart}
-            series={seriescolumnchart}
-            type="bar"
-            height={360}
-            width={"100%"}
-          />
+            <Chart
+              options={optionscolumnchart}
+              series={seriescolumnchart}
+              type="bar"
+              height={360}
+              width={'100%'}
+            />
           </Box>
         </Grid>
         {/* column */}
@@ -137,10 +153,10 @@ const RevenueUpdates = () => {
               </Box>
               <Box>
                 <Typography variant="h3" fontWeight="700">
-                  $63,489.50
+                  R$63.489,50
                 </Typography>
                 <Typography variant="subtitle2" color="textSecondary">
-                  Total Earnings
+                  Lucros Totais
                 </Typography>
               </Box>
             </Stack>
@@ -148,30 +164,39 @@ const RevenueUpdates = () => {
           <Stack spacing={3} my={5}>
             <Stack direction="row" spacing={2}>
               <Avatar
-                sx={{ width: 9, mt: 1, height: 9, bgcolor: primary, svg: { display: 'none' } }}
+                sx={{
+                  width: 9,
+                  mt: 1,
+                  height: 9,
+                  bgcolor: primary,
+                  svg: { display: 'none' },
+                }}
               ></Avatar>
               <Box>
                 <Typography variant="subtitle1" color="textSecondary">
-                  Earnings this month
+                  Lucros do Mês
                 </Typography>
-                <Typography variant="h5">$48,820</Typography>
+                <Typography variant="h5">R$48.820</Typography>
               </Box>
             </Stack>
             <Stack direction="row" spacing={2}>
               <Avatar
-                sx={{ width: 9, mt: 1, height: 9, bgcolor: secondary, svg: { display: 'none' } }}
+                sx={{
+                  width: 9,
+                  mt: 1,
+                  height: 9,
+                  bgcolor: secondary,
+                  svg: { display: 'none' },
+                }}
               ></Avatar>
               <Box>
                 <Typography variant="subtitle1" color="textSecondary">
-                  Expense this month
+                  Despesas do Mês
                 </Typography>
-                <Typography variant="h5">$26,498</Typography>
+                <Typography variant="h5">R$26.498</Typography>
               </Box>
             </Stack>
           </Stack>
-          <Button color="primary" variant="contained" fullWidth>
-            View Full Report
-          </Button>
         </Grid>
       </Grid>
     </DashboardCard>

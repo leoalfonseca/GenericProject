@@ -1,15 +1,8 @@
 import {
-  Autocomplete,
-  Box,
-  Button,
-  Checkbox,
   FormControl,
   Grid,
   InputLabel,
-  ListItemText,
   MenuItem,
-  Modal,
-  Paper,
   Select,
   TextField,
   Typography,
@@ -17,57 +10,54 @@ import {
 import GenericModal from 'components/genericModal/baseModal';
 import { UserContext } from 'context/UserContext';
 import { useFormik } from 'formik';
-import { useContext, useEffect } from 'react';
-import OrderListFunction from 'utils/orderList';
+import { useContext } from 'react';
 import * as yup from 'yup';
 
 interface IUserRegisterProps {
   open: boolean;
   handleClose: () => void;
-  userObj: any;
 }
 
 interface IFormValues {
+  id: string;
+  status: string;
   name: string;
   username: string;
-  groupId: string;
   email: string;
-  isActive: boolean;
+  budget: number;
 }
 
-const UserRegisterForm = ({
-  open,
-  handleClose,
-  userObj,
-}: IUserRegisterProps) => {
-  const { createUser } = useContext(UserContext);
+const UserRegisterForm = ({ open, handleClose }: IUserRegisterProps) => {
+  const { createUser, users } = useContext(UserContext);
 
   const schemaUsers = yup.object({
+    status: yup.string().required('Campo Obrigatório'),
     name: yup.string().required('Campo Obrigatório'),
     username: yup.string().required('Campo Obrigatório'),
-    groupId: yup.string().required('Campo Obrigatório'),
-    email: yup.string().email('Email inválido').required('Campo Obrigatório'),
-    isActive: yup.boolean().required('Campo Obrigatório'),
+    budget: yup.number().required('Campo Obrigatório'),
+    // email: yup.string().email('Email inválido').required('Campo Obrigatório'),
   });
 
   const initialValues: IFormValues = {
+    id: '',
+    status: '',
     name: '',
     username: '',
-    groupId: '',
     email: '',
-    isActive: true,
+    budget: 0,
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema: schemaUsers,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       try {
-        await createUser(values);
-        formik.resetForm();
-        handleCloseAndClear();
+        values.id = crypto.randomUUID();
+        createUser(values);
       } catch (error) {
-        console.error(error);
+        console.log(error);
+      } finally {
+        handleCloseAndClear();
       }
     },
   });
@@ -135,28 +125,35 @@ const UserRegisterForm = ({
           </FormControl>
         </Grid>
         <Grid item xs={12}>
+          <FormControl fullWidth>
+            <TextField
+              label="Budget *"
+              fullWidth
+              name="budget"
+              id="budget"
+              value={formik.values.budget}
+              onChange={formik.handleChange}
+              error={formik.touched.budget && Boolean(formik.errors.budget)}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
           <FormControl variant="outlined" fullWidth>
-            <InputLabel id="groupId" htmlFor="groupId">
-              Grupo *
+            <InputLabel id="status" htmlFor="status">
+              Status *
             </InputLabel>
             <Select
-              label="Grupo *"
-              labelId="groupId"
-              id="groupId"
-              {...formik.getFieldProps('groupId')}
-              error={formik.touched.groupId && Boolean(formik.errors.groupId)}
+              label="Status *"
+              labelId="status"
+              id="status"
+              {...formik.getFieldProps('status')}
+              error={formik.touched.status && Boolean(formik.errors.status)}
             >
-              {userObj &&
-                userObj.groups.map((group: any) => {
-                  return (
-                    <MenuItem key={group.id} value={group.id}>
-                      {group.name}
-                    </MenuItem>
-                  );
-                })}
+              <MenuItem value={'Ativo'}>Ativo</MenuItem>
+              <MenuItem value={'Inativo'}>Inativo</MenuItem>
             </Select>
             <Typography color="error">
-              {formik.touched.groupId && formik.errors.groupId}
+              {formik.touched.status && formik.errors.status}
             </Typography>
           </FormControl>
         </Grid>

@@ -20,53 +20,41 @@ interface EditUserFormProps {
   open: boolean;
   handleClose: () => void;
   user: UserProps | null;
-  userObj: any;
 }
 
-interface IOption {
-  value: string;
-  label: string;
-}
-
-const EditUserForm = ({
-  open,
-  handleClose,
-  user,
-  userObj,
-}: EditUserFormProps) => {
+const EditUserForm = ({ open, handleClose, user }: EditUserFormProps) => {
   const { editUser } = useContext(UserContext);
 
   const [initialValues, setInitialValues] = useState({
+    id: user?.id || '',
+    status: user?.status || '',
     name: user?.name || '',
     username: user?.username || '',
     email: user?.email || '',
+    budget: user?.budget || '',
   });
 
   const schemaUsers = yup.object({
+    status: yup.string(),
     name: yup.string(),
     username: yup.string(),
+    budget: yup.number(),
     email: yup.string().email('Email inválido'),
   });
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: schemaUsers,
-    onSubmit: async (values) => {
-      try {
-        if (user) {
-          const dataUpdated = compareValues(initialValues, values);
+    onSubmit: (values) => {
+      if (user) {
+        const dataUpdated = compareValues(initialValues, values);
 
-          if (Object.keys(dataUpdated).length > 0) {
-            await editUser(user.id, dataUpdated);
-          } else {
-            toast.error('Nenhuma alteração foi feita!');
-          }
-
-          formik.resetForm();
+        if (Object.keys(dataUpdated).length > 0) {
+          editUser(user.id, dataUpdated);
           handleCloseAndClear();
+        } else {
+          toast.error('Nenhuma alteração foi feita!');
         }
-      } catch (error) {
-        console.error(error);
       }
     },
   });
@@ -78,14 +66,20 @@ const EditUserForm = ({
 
   useEffect(() => {
     if (user) {
+      formik.setFieldValue('id', user?.id);
+      formik.setFieldValue('status', user?.status);
       formik.setFieldValue('name', user?.name);
       formik.setFieldValue('username', user?.username);
       formik.setFieldValue('email', user?.email);
+      formik.setFieldValue('budget', user?.budget);
 
       setInitialValues({
+        id: user?.id,
+        status: user?.status,
         name: user?.name,
         email: user?.email,
         username: user?.username,
+        budget: user?.budget,
       });
     }
   }, [user]);
@@ -138,6 +132,39 @@ const EditUserForm = ({
               onChange={formik.handleChange}
               error={formik.touched.email && Boolean(formik.errors.email)}
             />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <TextField
+              label="Budget *"
+              fullWidth
+              name="budget"
+              id="budget"
+              value={formik.values.budget}
+              onChange={formik.handleChange}
+              error={formik.touched.budget && Boolean(formik.errors.budget)}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel id="status" htmlFor="status">
+              Status *
+            </InputLabel>
+            <Select
+              label="Status *"
+              labelId="status"
+              id="status"
+              {...formik.getFieldProps('status')}
+              error={formik.touched.status && Boolean(formik.errors.status)}
+            >
+              <MenuItem value={'Ativo'}>Ativo</MenuItem>
+              <MenuItem value={'Inativo'}>Inativo</MenuItem>
+            </Select>
+            <Typography color="error">
+              {formik.touched.status && formik.errors.status}
+            </Typography>
           </FormControl>
         </Grid>
       </Grid>

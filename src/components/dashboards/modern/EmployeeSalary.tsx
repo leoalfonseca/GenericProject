@@ -1,5 +1,5 @@
-import dynamic from "next/dynamic";
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 import { useTheme } from '@mui/material/styles';
 
 import DashboardWidgetCard from '../../shared/DashboardWidgetCard';
@@ -21,7 +21,14 @@ const EmployeeSalary = () => {
       },
       height: 280,
     },
-    colors: [primarylight, primarylight, primary, primarylight, primarylight, primarylight],
+    colors: [
+      primarylight,
+      primarylight,
+      primary,
+      primarylight,
+      primarylight,
+      primarylight,
+    ],
     plotOptions: {
       bar: {
         borderRadius: 4,
@@ -44,7 +51,7 @@ const EmployeeSalary = () => {
       },
     },
     xaxis: {
-      categories: [['Apr'], ['May'], ['June'], ['July'], ['Aug'], ['Sept']],
+      categories: [['Abr'], ['Mai'], ['Jun'], ['Jul'], ['Ago'], ['Set']],
       axisBorder: {
         show: false,
       },
@@ -67,15 +74,21 @@ const EmployeeSalary = () => {
 
   return (
     <DashboardWidgetCard
-      title="Employee Salary"
-      subtitle="Every month"
-      dataLabel1="Salary"
-      dataItem1="$36,358"
-      dataLabel2="Profit"
-      dataItem2="$5,296"
+      title="Salário dos Funcionários"
+      subtitle="Todo mês"
+      dataLabel1="Salário"
+      dataItem1="R$36.358"
+      dataLabel2="Lucro"
+      dataItem2="R$5.296"
     >
       <>
-        <Chart options={optionscolumnchart} series={seriescolumnchart} type="bar" height={280} width={"100%"} />
+        <Chart
+          options={optionscolumnchart}
+          series={seriescolumnchart}
+          type="bar"
+          height={280}
+          width={'100%'}
+        />
       </>
     </DashboardWidgetCard>
   );

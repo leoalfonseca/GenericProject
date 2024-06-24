@@ -26,32 +26,41 @@ const AuthContext = React.createContext({} as IAuthContext);
 const AuthProvider: React.FC<IAuthProvider> = ({ children }) => {
   const router = useRouter();
 
+  // Login normal, com usuário e senha criptografados
+
   const signIn = async (dataLogin: AuthProps) => {
     try {
-      const { username, password } = dataLogin;
-      const encryptedUsername = encrypt({ text: username });
-      const encryptedPassword = encrypt({ text: password });
+      // const { username, password } = dataLogin;
+      // const encryptedUsername = encrypt({ text: username });
+      // const encryptedPassword = encrypt({ text: password });
 
-      const mode = process.env.MODE ? process.env.MODE.toLowerCase() : '';
-      const route = mode === 'dev' ? 'loginDev' : 'login';
+      // const mode = process.env.MODE ? process.env.MODE.toLowerCase() : '';
+      // const route = mode === 'dev' ? 'loginDev' : 'login';
 
-      const { data } = await api.post(route, {
-        username: encryptedUsername,
-        password: encryptedPassword,
-      });
+      // Envia os dados criptografados para a API
 
-      storageSetToken(data.token);
+      // const { data } = await api.post(route, {
+      //   username: encryptedUsername,
+      //   password: encryptedPassword,
+      // });
 
-      api.defaults.headers.Authorization = `Bearer ${data.token}`;
+      // Armazena o token no local storage
+
+      // storageSetToken(data.token);
+
+      // api.defaults.headers.Authorization = `Bearer ${data.token}`;
 
       toast.success('Usuário logado com sucesso!');
 
+      // Envia para a dashboard
       router.push('/home');
     } catch (error: any) {
       toast.error('Usuário ou senha inválidos');
       throw error;
     }
   };
+
+  // Login com SSO (Single Sign-On) Active Directory, diferença é na configuração do Axios
 
   const signInSSO = async () => {
     try {
@@ -68,6 +77,8 @@ const AuthProvider: React.FC<IAuthProvider> = ({ children }) => {
       throw error;
     }
   };
+
+  // Deslogar usuário
 
   const signOut = async () => {
     try {

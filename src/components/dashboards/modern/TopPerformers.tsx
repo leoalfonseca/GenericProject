@@ -29,8 +29,8 @@ const TopPerformers = () => {
 
   return (
     <DashboardCard
-      title="Top Projects"
-      subtitle="Best Products"
+      title="Melhores Projetos"
+      subtitle="Atribuições"
       action={
         <CustomSelect
           labelId="month-dd"
@@ -39,9 +39,9 @@ const TopPerformers = () => {
           value={month}
           onChange={handleChange}
         >
-          <MenuItem value={1}>March 2023</MenuItem>
-          <MenuItem value={2}>April 2023</MenuItem>
-          <MenuItem value={3}>May 2023</MenuItem>
+          <MenuItem value={1}>Março 2024</MenuItem>
+          <MenuItem value={2}>Abril 2024</MenuItem>
+          <MenuItem value={3}>Maio 2024</MenuItem>
         </CustomSelect>
       }
     >
@@ -55,16 +55,24 @@ const TopPerformers = () => {
           <TableHead>
             <TableRow>
               <TableCell>
-                <Typography variant="subtitle2" fontWeight={600}>Assigned</Typography>
+                <Typography variant="subtitle2" fontWeight={600}>
+                  Responsável
+                </Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="subtitle2" fontWeight={600}>Project</Typography>
+                <Typography variant="subtitle2" fontWeight={600}>
+                  Projeto
+                </Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="subtitle2" fontWeight={600}>Priority</Typography>
+                <Typography variant="subtitle2" fontWeight={600}>
+                  Prioridade
+                </Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="subtitle2" fontWeight={600}>Budget</Typography>
+                <Typography variant="subtitle2" fontWeight={600}>
+                  Budget
+                </Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -73,19 +81,31 @@ const TopPerformers = () => {
               <TableRow key={basic.id}>
                 <TableCell>
                   <Stack direction="row" spacing={2}>
-                    <Avatar src={basic.imgsrc} alt={basic.imgsrc} sx={{ width: 40, height: 40 }} />
+                    <Avatar
+                      src={basic.imgsrc}
+                      alt={basic.imgsrc}
+                      sx={{ width: 40, height: 40 }}
+                    />
                     <Box>
                       <Typography variant="subtitle2" fontWeight={600}>
                         {basic.name}
                       </Typography>
-                      <Typography color="textSecondary" fontSize="12px" variant="subtitle2">
+                      <Typography
+                        color="textSecondary"
+                        fontSize="12px"
+                        variant="subtitle2"
+                      >
                         {basic.post}
                       </Typography>
                     </Box>
                   </Stack>
                 </TableCell>
                 <TableCell>
-                  <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                  <Typography
+                    color="textSecondary"
+                    variant="subtitle2"
+                    fontWeight={400}
+                  >
                     {basic.pname}
                   </Typography>
                 </TableCell>
@@ -94,21 +114,21 @@ const TopPerformers = () => {
                   <Chip
                     sx={{
                       bgcolor:
-                        basic.status === 'High'
+                        basic.status === 'Alto'
                           ? (theme) => theme.palette.error.light
-                          : basic.status === 'Medium'
-                            ? (theme) => theme.palette.warning.light
-                            : basic.status === 'Low'
-                              ? (theme) => theme.palette.success.light
-                              : (theme) => theme.palette.secondary.light,
+                          : basic.status === 'Médio'
+                          ? (theme) => theme.palette.warning.light
+                          : basic.status === 'Baixo'
+                          ? (theme) => theme.palette.success.light
+                          : (theme) => theme.palette.secondary.light,
                       color:
-                        basic.status === 'High'
+                        basic.status === 'Alto'
                           ? (theme) => theme.palette.error.main
-                          : basic.status === 'Medium'
-                            ? (theme) => theme.palette.warning.main
-                            : basic.status === 'Low'
-                              ? (theme) => theme.palette.success.main
-                              : (theme) => theme.palette.secondary.main,
+                          : basic.status === 'Médio'
+                          ? (theme) => theme.palette.warning.main
+                          : basic.status === 'Baixo'
+                          ? (theme) => theme.palette.success.main
+                          : (theme) => theme.palette.secondary.main,
                       borderRadius: '8px',
                     }}
                     size="small"
@@ -116,7 +136,7 @@ const TopPerformers = () => {
                   />
                 </TableCell>
                 <TableCell>
-                  <Typography variant="subtitle2">${basic.budget}k</Typography>
+                  <Typography variant="subtitle2">R${basic.budget}k</Typography>
                 </TableCell>
               </TableRow>
             ))}
