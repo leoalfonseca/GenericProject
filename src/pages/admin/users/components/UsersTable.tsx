@@ -37,6 +37,7 @@ const UsersTable = () => {
       Nome: item.name,
       'Nome de Usuário': item.username,
       Email: item.email,
+      Budget: item.budget,
     }));
 
     const ws = XLSX.utils.json_to_sheet(exportData);
@@ -63,6 +64,7 @@ const UsersTable = () => {
       Nome: item.name,
       'Nome de Usuário': item.username,
       Email: item.email,
+      Budget: item.budget,
     }));
 
     const doc = new jsPDF('l', 'mm', [297, 400]);
@@ -72,10 +74,17 @@ const UsersTable = () => {
       { header: 'Nome', dataKey: 'Nome' },
       { header: 'Nome de Usuário', dataKey: 'Nome de Usuário' },
       { header: 'Email', dataKey: 'Email' },
+      { header: 'Budget', dataKey: 'Budget' },
     ];
 
     const rowsPDF = exportData.map((row: any) => {
-      return [row.Status, row.Nome, row['Nome de Usuário'], row.Email];
+      return [
+        row.Status,
+        row.Nome,
+        row['Nome de Usuário'],
+        row.Email,
+        row.Budget,
+      ];
     });
 
     autoTable(doc, {
@@ -155,7 +164,7 @@ const UsersTable = () => {
                 ? {
                     backgroundColor: '#253662',
                     color: '#EAEFF4',
-                    mr: 0.3,
+                    mr: 0.8,
                     '&:hover': {
                       backgroundColor: '#172342',
                       color: '#EAEFF4',
@@ -167,7 +176,7 @@ const UsersTable = () => {
                 : {
                     backgroundColor: '#5D87FF',
                     color: '#ffffff',
-                    mr: 0.3,
+                    mr: 0.8,
                     '&:hover': {
                       backgroundColor: '#4261b7',
                       color: '#ffffff',
@@ -178,22 +187,9 @@ const UsersTable = () => {
                   }
             }
           />
-          <Button
-            startIcon={<IconTrash />}
-            onClick={() => handleDeleteUser(params.row.id)}
-            sx={{
-              mx: 0.3,
-              backgroundColor: '#f7685d',
-              color: 'white',
-              '&:hover': {
-                backgroundColor: `#ba000d`,
-                color: 'white',
-              },
-              '& .MuiButton-startIcon': {
-                margin: 'auto',
-              },
-            }}
-          />
+          <Button onClick={() => handleDeleteUser(params.row.id)} color="error">
+            <IconTrash />
+          </Button>
         </Box>
       ),
     },
@@ -237,19 +233,16 @@ const UsersTable = () => {
     }
   };
 
-  const handleDeleteUser = async (userId: string) => {
-    try {
-      await deleteUser(userId);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      console.log(rows);
-      getUsersList();
-    }
+  const handleDeleteUser = (userId: string) => {
+    deleteUser(userId);
   };
 
   useEffect(() => {
     getUsersList();
+  }, []);
+
+  useEffect(() => {
+    setRows(users);
   }, [users]);
 
   return (

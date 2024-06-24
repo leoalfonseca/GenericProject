@@ -13,45 +13,45 @@ export interface EventType {
 
 const Events: EventType[] = [
   {
-    title: "Calibração Equipamento 3333-x",
+    title: 'Reunião com Diretoria',
     allDay: true,
     start: new Date(y, m, 3),
     end: new Date(y, m, 3),
-    color: "default",
+    color: 'default',
   },
   {
-    title: "Verificação Equipamento 2323-x",
+    title: 'Visita Técnica',
     start: new Date(y, m, d + 3, 10, 30),
     end: new Date(y, m, d + 3, 11, 30),
     allDay: false,
-    color: "green",
+    color: 'green',
   },
   {
-    title: "Análise Amostra 0003-23",
+    title: 'Prototipagem de Software',
     start: new Date(y, m, d + 7, 12, 0),
     end: new Date(y, m, d + 7, 14, 0),
     allDay: false,
-    color: "red",
+    color: 'red',
   },
   {
-    title: "Coleta Amostra 0001-22",
+    title: 'Entrega de Relatório Final',
     start: new Date(y, m, d - 2),
     end: new Date(y, m, d - 2),
     allDay: true,
-    color: "azure",
+    color: 'azure',
   },
   {
-    title: "Transferência Contentor TG23323",
+    title: 'Reunião com Cliente',
     start: new Date(y, m, d + 1, 19, 0),
     end: new Date(y, m, d + 1, 22, 30),
     allDay: false,
-    color: "azure",
+    color: 'azure',
   },
   {
-    title: "Calibração Equipamento 2323-x",
+    title: 'Daily Meeting',
     start: new Date(y, m, 23),
-    end: new Date(y, m, 25),
-    color: "warning",
+    end: new Date(y, m, 23),
+    color: 'warning',
   },
 ];
 

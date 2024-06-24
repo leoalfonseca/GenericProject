@@ -21,21 +21,16 @@ const UserContext = createContext({} as IUserContext);
 const UserProvider = ({ children }: IUserProvider) => {
   const [users, setUsers] = useState<UserProps[]>(UsersData);
 
-  async function createUser(dataUser: UserProps) {
-    try {
-      // await api.post('users', dataUser);
-      setUsers((prevUsers) => [...prevUsers, dataUser]);
-      toast.success('Usuário criado com sucesso!');
-    } catch (error) {
-      console.error(error);
-      toast.error('Algo deu errado!');
-      throw error;
-    }
-  }
+  const createUser = (dataUser: UserProps) => {
+    // await api.post('users', dataUser);
+    const updatedUsers = [...users, dataUser];
+    setUsers(updatedUsers);
+    toast.success('Usuário criado com sucesso!');
+  };
 
-  const getUsers = async () => {
+  const getUsers = () => {
     try {
-      // const { data } = await api.get('users?pageNumber=1&pageSize=9999');
+      // const { data } = await api.get('users');
       // setUsers(data);
       // return data;
 
@@ -46,30 +41,25 @@ const UserProvider = ({ children }: IUserProvider) => {
     }
   };
 
-  const deleteUser = async (userId: string) => {
-    try {
-      setUsers((prevUsers) => {
-        const userIndex = prevUsers.findIndex((user) => user.id === userId);
-        if (userIndex !== -1) {
-          const updatedUsers = [...prevUsers];
-          updatedUsers.splice(userIndex, 1);
-          toast.success('Usuário excluído com sucesso!');
-          return updatedUsers;
-        } else {
-          toast.error('Usuário não encontrado!');
-          return prevUsers;
-        }
-      });
-    } catch (error) {
-      console.error(error);
-      toast.error('Algo deu errado ao excluir o usuário!');
-      throw error;
-    }
+  const deleteUser = (userId: string) => {
+    const updatedUsers = users.filter((ind: UserProps) => ind.id !== userId);
+    setUsers(updatedUsers);
   };
 
-  const editUser = async (userId: string, updatedData: UserProps) => {
+  const editUser = (userId: string, updatedData: UserProps) => {
     try {
-      await api.patch(`users/${userId}`, updatedData); // Passa os dados a serem atualizados
+      // await api.patch(`users/${userId}`, updatedData); // Passa os dados a serem atualizados
+
+      const updatedUsers = users.map((ind: UserProps) => {
+        if (ind.id === userId) {
+          return {
+            ...ind,
+            ...updatedData,
+          };
+        }
+        return ind;
+      });
+      setUsers(updatedUsers);
       toast.success('Usuário alterado com sucesso!');
     } catch (error) {
       console.error(error);

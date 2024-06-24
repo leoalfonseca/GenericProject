@@ -26,6 +26,7 @@ const EditUserForm = ({ open, handleClose, user }: EditUserFormProps) => {
   const { editUser } = useContext(UserContext);
 
   const [initialValues, setInitialValues] = useState({
+    id: user?.id || '',
     status: user?.status || '',
     name: user?.name || '',
     username: user?.username || '',
@@ -44,22 +45,16 @@ const EditUserForm = ({ open, handleClose, user }: EditUserFormProps) => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: schemaUsers,
-    onSubmit: async (values) => {
-      try {
-        if (user) {
-          const dataUpdated = compareValues(initialValues, values);
+    onSubmit: (values) => {
+      if (user) {
+        const dataUpdated = compareValues(initialValues, values);
 
-          if (Object.keys(dataUpdated).length > 0) {
-            await editUser(user.id, dataUpdated);
-          } else {
-            toast.error('Nenhuma alteração foi feita!');
-          }
-
-          formik.resetForm();
+        if (Object.keys(dataUpdated).length > 0) {
+          editUser(user.id, dataUpdated);
           handleCloseAndClear();
+        } else {
+          toast.error('Nenhuma alteração foi feita!');
         }
-      } catch (error) {
-        console.error(error);
       }
     },
   });
@@ -71,6 +66,7 @@ const EditUserForm = ({ open, handleClose, user }: EditUserFormProps) => {
 
   useEffect(() => {
     if (user) {
+      formik.setFieldValue('id', user?.id);
       formik.setFieldValue('status', user?.status);
       formik.setFieldValue('name', user?.name);
       formik.setFieldValue('username', user?.username);
@@ -78,6 +74,7 @@ const EditUserForm = ({ open, handleClose, user }: EditUserFormProps) => {
       formik.setFieldValue('budget', user?.budget);
 
       setInitialValues({
+        id: user?.id,
         status: user?.status,
         name: user?.name,
         email: user?.email,

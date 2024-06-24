@@ -2,7 +2,7 @@ import { UserProps } from 'types/user';
 
 const UsersData: UserProps[] = [
   {
-    id: '1',
+    id: crypto.randomUUID(),
     name: 'João Silva',
     email: 'jsilva@corp.com',
     username: 'jsilva',
@@ -10,7 +10,7 @@ const UsersData: UserProps[] = [
     budget: 24.5,
   },
   {
-    id: '2',
+    id: crypto.randomUUID(),
     name: 'Guilherme Silveira',
     email: 'gsilveira@corp.com',
     username: 'gsilveira',
@@ -18,7 +18,7 @@ const UsersData: UserProps[] = [
     budget: 12.8,
   },
   {
-    id: '3',
+    id: crypto.randomUUID(),
     name: 'Michael dos Santos',
     email: 'msantos@corp.com',
     username: 'msantos',

@@ -35,7 +35,7 @@ const UserRegisterForm = ({ open, handleClose }: IUserRegisterProps) => {
     name: yup.string().required('Campo Obrigatório'),
     username: yup.string().required('Campo Obrigatório'),
     budget: yup.number().required('Campo Obrigatório'),
-    email: yup.string().email('Email inválido').required('Campo Obrigatório'),
+    // email: yup.string().email('Email inválido').required('Campo Obrigatório'),
   });
 
   const initialValues: IFormValues = {
@@ -50,14 +50,14 @@ const UserRegisterForm = ({ open, handleClose }: IUserRegisterProps) => {
   const formik = useFormik({
     initialValues,
     validationSchema: schemaUsers,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       try {
-        values.id = users.length.toString();
-        await createUser(values);
-        formik.resetForm();
-        handleCloseAndClear();
+        values.id = crypto.randomUUID();
+        createUser(values);
       } catch (error) {
-        console.error(error);
+        console.log(error);
+      } finally {
+        handleCloseAndClear();
       }
     },
   });
