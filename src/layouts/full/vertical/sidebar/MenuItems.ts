@@ -14,25 +14,35 @@ interface MenuitemsType {
   variant?: string;
   external?: boolean;
 }
-import { IconCalendar, IconUserCircle } from '@tabler/icons-react';
+import {
+  IconCalendar,
+  IconDashboard,
+  IconUserCircle,
+} from '@tabler/icons-react';
 
 const Menuitems: MenuitemsType[] = [
   {
     navlabel: true,
-    subheader: 'Home',
+    subheader: 'Menu',
   },
 
   {
     id: uniqueId(),
+    title: 'Dashboard',
+    icon: IconDashboard,
+    href: '/home',
+  },
+  {
+    id: uniqueId(),
     title: 'Usuários',
     icon: IconUserCircle,
-    href: 'admin/users',
+    href: '/admin/users',
   },
   {
     id: uniqueId(),
     title: 'Calendário',
     icon: IconCalendar,
-    href: 'calendar',
+    href: '/calendar',
   },
 ];
 

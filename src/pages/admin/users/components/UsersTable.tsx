@@ -16,6 +16,8 @@ import * as XLSX from 'xlsx';
 import EditUserForm from './EditUserForm';
 import { IValueGetter } from 'types/valueGetter';
 import { get } from 'http';
+import { useSelector } from 'react-redux';
+import { AppState } from 'store/Store';
 
 const UsersTable = () => {
   const [downloadMenuAnchor, setDownloadMenuAnchor] =
@@ -148,18 +150,33 @@ const UsersTable = () => {
           <Button
             startIcon={<IconEdit />}
             onClick={() => handleEditUser(params.row.id)}
-            sx={{
-              mx: 0.3,
-              backgroundColor: '#b0c8fc',
-              color: '#252628',
-              '&:hover': {
-                backgroundColor: `#7795d6`,
-                color: '#252628',
-              },
-              '& .MuiButton-startIcon': {
-                margin: 'auto',
-              },
-            }}
+            sx={
+              customizer.activeMode === 'dark'
+                ? {
+                    backgroundColor: '#253662',
+                    color: '#EAEFF4',
+                    mr: 0.3,
+                    '&:hover': {
+                      backgroundColor: '#172342',
+                      color: '#EAEFF4',
+                    },
+                    '& .MuiButton-startIcon': {
+                      margin: 'auto',
+                    },
+                  }
+                : {
+                    backgroundColor: '#5D87FF',
+                    color: '#ffffff',
+                    mr: 0.3,
+                    '&:hover': {
+                      backgroundColor: '#4261b7',
+                      color: '#ffffff',
+                    },
+                    '& .MuiButton-startIcon': {
+                      margin: 'auto',
+                    },
+                  }
+            }
           />
           <Button
             startIcon={<IconTrash />}
@@ -186,6 +203,7 @@ const UsersTable = () => {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [editingUser, setEditingUser] = useState<UserProps | null>(null);
+  const customizer = useSelector((state: AppState) => state.customizer);
 
   const handleOpen = () => setOpen(true);
 
@@ -203,7 +221,7 @@ const UsersTable = () => {
     getUsersList();
   };
 
-  const { getUsers, deleteUser } = useContext(UserContext);
+  const { getUsers, deleteUser, users } = useContext(UserContext);
 
   const getUsersList = async () => {
     const usersList = await getUsers();
@@ -232,7 +250,7 @@ const UsersTable = () => {
 
   useEffect(() => {
     getUsersList();
-  }, []);
+  }, [users]);
 
   return (
     <LocalizationProvider
@@ -249,18 +267,33 @@ const UsersTable = () => {
           >
             <Button
               onClick={handleDownloadMenuOpen}
-              sx={{
-                mx: 0.3,
-                backgroundColor: '#b0c8fc',
-                color: '#252628',
-                '&:hover': {
-                  backgroundColor: `#7795d6`,
-                  color: '#252628',
-                },
-                '& .MuiButton-startIcon': {
-                  margin: 'auto',
-                },
-              }}
+              sx={
+                customizer.activeMode === 'dark'
+                  ? {
+                      backgroundColor: '#253662',
+                      color: '#EAEFF4',
+                      mr: 1,
+                      '&:hover': {
+                        backgroundColor: '#172342',
+                        color: '#EAEFF4',
+                      },
+                      '& .MuiButton-startIcon': {
+                        margin: 'auto',
+                      },
+                    }
+                  : {
+                      backgroundColor: '#5D87FF',
+                      color: '#ffffff',
+                      mr: 1,
+                      '&:hover': {
+                        backgroundColor: '#4261b7',
+                        color: '#ffffff',
+                      },
+                      '& .MuiButton-startIcon': {
+                        margin: 'auto',
+                      },
+                    }
+              }
             >
               Exportar
             </Button>
@@ -275,17 +308,31 @@ const UsersTable = () => {
             <Button
               onClick={handleOpen}
               startIcon={<IconPlus />}
-              sx={{
-                backgroundColor: '#b0c8fc',
-                color: '#252628',
-                '&:hover': {
-                  backgroundColor: `#7795d6`,
-                  color: '#252628',
-                },
-                '& .MuiButton-startIcon': {
-                  margin: 'auto',
-                },
-              }}
+              sx={
+                customizer.activeMode === 'dark'
+                  ? {
+                      backgroundColor: '#253662',
+                      color: '#EAEFF4',
+                      '&:hover': {
+                        backgroundColor: '#172342',
+                        color: '#EAEFF4',
+                      },
+                      '& .MuiButton-startIcon': {
+                        margin: 'auto',
+                      },
+                    }
+                  : {
+                      backgroundColor: '#5D87FF',
+                      color: '#ffffff',
+                      '&:hover': {
+                        backgroundColor: '#4261b7',
+                        color: '#ffffff',
+                      },
+                      '& .MuiButton-startIcon': {
+                        margin: 'auto',
+                      },
+                    }
+              }
             >
               Adicionar Novo
             </Button>

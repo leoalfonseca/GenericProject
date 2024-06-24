@@ -19,6 +19,7 @@ interface IUserRegisterProps {
 }
 
 interface IFormValues {
+  id: string;
   status: string;
   name: string;
   username: string;
@@ -27,7 +28,7 @@ interface IFormValues {
 }
 
 const UserRegisterForm = ({ open, handleClose }: IUserRegisterProps) => {
-  const { createUser } = useContext(UserContext);
+  const { createUser, users } = useContext(UserContext);
 
   const schemaUsers = yup.object({
     status: yup.string().required('Campo Obrigatório'),
@@ -38,6 +39,7 @@ const UserRegisterForm = ({ open, handleClose }: IUserRegisterProps) => {
   });
 
   const initialValues: IFormValues = {
+    id: '',
     status: '',
     name: '',
     username: '',
@@ -50,6 +52,7 @@ const UserRegisterForm = ({ open, handleClose }: IUserRegisterProps) => {
     validationSchema: schemaUsers,
     onSubmit: async (values) => {
       try {
+        values.id = users.length.toString();
         await createUser(values);
         formik.resetForm();
         handleCloseAndClear();

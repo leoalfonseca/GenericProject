@@ -8,44 +8,44 @@ interface notificationType {
 
 const notifications: notificationType[] = [
   {
-    avatar: '/images/profile/user-1.jpg',
-    title: 'Roman Joined the Team!',
-    subtitle: 'Congratulate him',
+    avatar: '/images/profile/user-5.jpg',
+    title: 'Michael se juntou a equipe!',
+    subtitle: 'Parabéns e boas-vindas',
   },
   {
     avatar: '/images/profile/user-2.jpg',
-    title: 'New message received',
-    subtitle: 'Salma sent you new message',
+    title: 'Nova mensagem de Salma',
+    subtitle: 'Salma enviou uma mensagem',
   },
   {
     avatar: '/images/profile/user-3.jpg',
-    title: 'New Payment received',
-    subtitle: 'Check your earnings',
+    title: 'Pagamento recebido',
+    subtitle: 'Verifique seus ganhos',
   },
   {
     avatar: '/images/profile/user-4.jpg',
-    title: 'Jolly completed tasks',
-    subtitle: 'Assign her new tasks',
+    title: 'João completou suas tarefas',
+    subtitle: 'Atribua novas tarefas a ele',
   },
   {
-    avatar: '/images/profile/user-1.jpg',
+    avatar: '/images/profile/user-4.jpg',
     title: 'Roman Joined the Team!',
-    subtitle: 'Congratulate him',
+    subtitle: 'Parabéns e boas-vindas',
   },
   {
     avatar: '/images/profile/user-2.jpg',
-    title: 'New message received',
-    subtitle: 'Salma sent you new message',
+    title: 'Nova mensagem de Salma',
+    subtitle: 'Salma enviou uma mensagem',
   },
   {
     avatar: '/images/profile/user-3.jpg',
-    title: 'New Payment received',
-    subtitle: 'Check your earnings',
+    title: 'Pagamento recebido',
+    subtitle: 'Verifique seus ganhos',
   },
   {
     avatar: '/images/profile/user-4.jpg',
-    title: 'Jolly completed tasks',
-    subtitle: 'Assign her new tasks',
+    title: 'João completou suas tarefas',
+    subtitle: 'Atribua novas tarefas a ele',
   },
 ];
 

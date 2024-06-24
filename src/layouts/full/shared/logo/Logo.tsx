@@ -1,10 +1,9 @@
-import { FC } from 'react';
 import { useSelector } from '../../../../store/Store';
 import Link from 'next/link';
 import { styled } from '@mui/material';
 import { AppState } from '../../../../store/Store';
 import Image from 'next/image';
-import { IconArrowsExchange, IconGhost } from '@tabler/icons-react';
+import { IconArrowsExchange } from '@tabler/icons-react';
 
 const Logo = () => {
   const customizer = useSelector((state: AppState) => state.customizer);

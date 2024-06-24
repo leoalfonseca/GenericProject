@@ -23,7 +23,7 @@ const UserProvider = ({ children }: IUserProvider) => {
 
   async function createUser(dataUser: UserProps) {
     try {
-      await api.post('users', dataUser);
+      // await api.post('users', dataUser);
       setUsers((prevUsers) => [...prevUsers, dataUser]);
       toast.success('Usuário criado com sucesso!');
     } catch (error) {
@@ -48,15 +48,18 @@ const UserProvider = ({ children }: IUserProvider) => {
 
   const deleteUser = async (userId: string) => {
     try {
-      const userIndex = users.findIndex((user) => user.id === userId);
-      if (userIndex !== -1) {
-        const updatedUsers = [...users];
-        updatedUsers.splice(userIndex, 1);
-        setUsers(updatedUsers);
-        toast.success('Usuário excluído com sucesso!');
-      } else {
-        toast.error('Usuário não encontrado!');
-      }
+      setUsers((prevUsers) => {
+        const userIndex = prevUsers.findIndex((user) => user.id === userId);
+        if (userIndex !== -1) {
+          const updatedUsers = [...prevUsers];
+          updatedUsers.splice(userIndex, 1);
+          toast.success('Usuário excluído com sucesso!');
+          return updatedUsers;
+        } else {
+          toast.error('Usuário não encontrado!');
+          return prevUsers;
+        }
+      });
     } catch (error) {
       console.error(error);
       toast.error('Algo deu errado ao excluir o usuário!');
@@ -64,15 +67,7 @@ const UserProvider = ({ children }: IUserProvider) => {
     }
   };
 
-  const editUser = async (
-    userId: string,
-    updatedData: {
-      name?: string;
-      username?: string;
-      email?: string;
-      groupId?: string | null;
-    }
-  ) => {
+  const editUser = async (userId: string, updatedData: UserProps) => {
     try {
       await api.patch(`users/${userId}`, updatedData); // Passa os dados a serem atualizados
       toast.success('Usuário alterado com sucesso!');

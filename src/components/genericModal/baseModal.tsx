@@ -9,9 +9,8 @@ import {
   Button,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import LoadingButton from '@mui/lab/LoadingButton';
-import SaveIcon from '@mui/icons-material/Save';
 import { ThemeProviderProps } from '@mui/material/styles/ThemeProvider';
+import { AppState, useSelector } from 'store/Store';
 
 interface iModalGenericProps {
   isOpen: boolean;
@@ -39,37 +38,63 @@ const GenericModal = (props: iModalGenericProps) => {
   }: iModalGenericProps = props;
 
   const fullScreen = useMediaQuery('(max-width: 760px)');
+  const customizer = useSelector((state: AppState) => state.customizer);
 
   const ContainerModalCssProperty: SxProps<ThemeProviderProps> = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   };
-
-  const modalContainerCssProperty: SxProps<ThemeProviderProps> = {
-    backgroundColor: 'whiteSmoke',
-    minWidth: fullScreen ? '100%' : width,
-    maxWidth: '1000px',
-    maxHeight: fullScreen ? '100%' : '90%',
-    minHeight: fullScreen ? '100%' : 'none',
-    borderRadius: fullScreen ? '0px' : '8px',
-    overflowX: 'scroll',
-    '::-webkit-scrollbar': {
-      backgroundColor: 'transparent',
-      width: '7px',
-    },
-    '::-webkit-scrollbar-button': {
-      backgroundColor: 'transparent',
-      width: '5px',
-    },
-    '::-webkit-scrollbar-thumb': {
-      backgroundColor: '#9b9a9aa0',
-      borderRadius: '4px',
-    },
-    '::-webkit-scrollbar-corner': {
-      backgroundColor: 'transparent',
-    },
-  };
+  const modalContainerCssProperty: SxProps<ThemeProviderProps> =
+    customizer.activeMode === 'dark'
+      ? {
+          backgroundColor: '#2A3447',
+          minWidth: fullScreen ? '100%' : width,
+          maxWidth: '1000px',
+          maxHeight: fullScreen ? '100%' : '90%',
+          minHeight: fullScreen ? '100%' : 'none',
+          borderRadius: fullScreen ? '0px' : '8px',
+          overflowX: 'scroll',
+          '::-webkit-scrollbar': {
+            backgroundColor: 'transparent',
+            width: '7px',
+          },
+          '::-webkit-scrollbar-button': {
+            backgroundColor: 'transparent',
+            width: '5px',
+          },
+          '::-webkit-scrollbar-thumb': {
+            backgroundColor: '#9b9a9aa0',
+            borderRadius: '4px',
+          },
+          '::-webkit-scrollbar-corner': {
+            backgroundColor: 'transparent',
+          },
+        }
+      : {
+          backgroundColor: 'whiteSmoke',
+          minWidth: fullScreen ? '100%' : width,
+          maxWidth: '1000px',
+          maxHeight: fullScreen ? '100%' : '90%',
+          minHeight: fullScreen ? '100%' : 'none',
+          borderRadius: fullScreen ? '0px' : '8px',
+          overflowX: 'scroll',
+          '::-webkit-scrollbar': {
+            backgroundColor: 'transparent',
+            width: '7px',
+          },
+          '::-webkit-scrollbar-button': {
+            backgroundColor: 'transparent',
+            width: '5px',
+          },
+          '::-webkit-scrollbar-thumb': {
+            backgroundColor: '#9b9a9aa0',
+            borderRadius: '4px',
+          },
+          '::-webkit-scrollbar-corner': {
+            backgroundColor: 'transparent',
+          },
+        };
 
   return (
     <ContainerModal
@@ -141,35 +166,64 @@ const GenericModal = (props: iModalGenericProps) => {
                 <Button
                   variant="contained"
                   onClick={handleClose}
-                  sx={{
-                    backgroundColor: '#b0c8fc',
-                    color: '#252628',
-                    marginRight: 2,
-                    '&:hover': {
-                      backgroundColor: `#7795d6`,
-                      color: '#252628',
-                    },
-                    '& .MuiButton-startIcon': {
-                      margin: 'auto',
-                    },
-                  }}
+                  sx={
+                    customizer.activeMode === 'dark'
+                      ? {
+                          backgroundColor: '#253662',
+                          color: '#EAEFF4',
+                          mr: 1,
+                          '&:hover': {
+                            backgroundColor: '#172342',
+                            color: '#EAEFF4',
+                          },
+                          '& .MuiButton-startIcon': {
+                            margin: 'auto',
+                          },
+                        }
+                      : {
+                          backgroundColor: '#5D87FF',
+                          color: '#ffffff',
+                          mr: 1,
+                          '&:hover': {
+                            backgroundColor: '#4261b7',
+                            color: '#ffffff',
+                          },
+                          '& .MuiButton-startIcon': {
+                            margin: 'auto',
+                          },
+                        }
+                  }
                 >
                   Cancelar
                 </Button>
                 <Button
                   variant="contained"
                   type="submit"
-                  sx={{
-                    backgroundColor: '#b0c8fc',
-                    color: '#252628',
-                    '&:hover': {
-                      backgroundColor: `#7795d6`,
-                      color: '#252628',
-                    },
-                    '& .MuiButton-startIcon': {
-                      margin: 'auto',
-                    },
-                  }}
+                  sx={
+                    customizer.activeMode === 'dark'
+                      ? {
+                          backgroundColor: '#253662',
+                          color: '#EAEFF4',
+                          '&:hover': {
+                            backgroundColor: '#172342',
+                            color: '#EAEFF4',
+                          },
+                          '& .MuiButton-startIcon': {
+                            margin: 'auto',
+                          },
+                        }
+                      : {
+                          backgroundColor: '#5D87FF',
+                          color: '#ffffff',
+                          '&:hover': {
+                            backgroundColor: '#4261b7',
+                            color: '#ffffff',
+                          },
+                          '& .MuiButton-startIcon': {
+                            margin: 'auto',
+                          },
+                        }
+                  }
                 >
                   Salvar
                 </Button>
