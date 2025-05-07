@@ -1,6 +1,6 @@
-import { useRouter } from "next/router";
-import { ReactNode, useEffect } from "react";
-import { storageGetToken } from "storage/storageToken";
+import { useRouter } from 'next/router';
+import { ReactNode, useEffect } from 'react';
+import { storageGetToken } from 'storage/storageToken';
 
 interface IProtectRoute {
   children: ReactNode;
@@ -13,7 +13,7 @@ export const ProtectRoute = ({ children }: IProtectRoute) => {
     const token = storageGetToken();
 
     if (!token) {
-      router.push("/login");
+      router.push('/');
     }
   }, []);
 

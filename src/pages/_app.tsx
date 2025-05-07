@@ -8,7 +8,6 @@ import { ThemeSettings } from 'theme/Theme';
 import createEmotionCache from 'createEmotionCache';
 import { Provider } from 'react-redux';
 import Store from 'store/Store';
-import RTL from 'layouts/full/shared/customizer/RTL';
 import { useSelector } from 'store/Store';
 import { AppState } from 'store/Store';
 import { ToastContainer } from 'react-toastify';
@@ -60,13 +59,10 @@ const MyApp = (props: MyAppProps) => {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>
-        <RTL direction={customizer.activeDir}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </RTL>
       </ThemeProvider>
     </CacheProvider>
   );

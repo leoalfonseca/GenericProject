@@ -59,7 +59,7 @@ const AuthLogin = ({ title, subtitle, subtext }: loginType) => {
 
       {subtext}
 
-      <AuthSocialButtons title="Entrar com" />
+      {/* <AuthSocialButtons title="Entrar com" />
       <Box mt={3}>
         <Divider>
           <Typography
@@ -73,7 +73,7 @@ const AuthLogin = ({ title, subtitle, subtext }: loginType) => {
             ou entre com
           </Typography>
         </Divider>
-      </Box>
+      </Box> */}
 
       <Stack>
         <Box>
